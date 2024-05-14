@@ -25,10 +25,6 @@ namespace Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Word>>> GetWords()
         {
-          if (_context.Words == null)
-          {
-              return NotFound();
-          }
             return await _context.Words.ToListAsync();
         }
 
@@ -36,10 +32,6 @@ namespace Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Word>> GetWord(int id)
         {
-          if (_context.Words == null)
-          {
-              return NotFound();
-          }
             var word = await _context.Words.FindAsync(id);
 
             if (word == null)
@@ -51,7 +43,6 @@ namespace Server.Controllers
         }
 
         // PUT: api/Words/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWord(int id, Word word)
         {
@@ -82,14 +73,9 @@ namespace Server.Controllers
         }
 
         // POST: api/Words
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Word>> PostWord(Word word)
         {
-          if (_context.Words == null)
-          {
-              return Problem("Entity set 'WordDbContext.Words'  is null.");
-          }
             _context.Words.Add(word);
             await _context.SaveChangesAsync();
 
@@ -100,10 +86,6 @@ namespace Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWord(int id)
         {
-            if (_context.Words == null)
-            {
-                return NotFound();
-            }
             var word = await _context.Words.FindAsync(id);
             if (word == null)
             {

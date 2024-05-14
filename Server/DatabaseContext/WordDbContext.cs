@@ -12,8 +12,10 @@ public class WordDbContext:DbContext
     {
     }
 
+    // 添加
     public DbSet<Word> Words { get; set; } = null!;
 
+    // 配置
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Word>(entity =>

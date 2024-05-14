@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Shared.Services;
+using Shared.Services.Impl;
+
 namespace Server;
 using Server.DatabaseContext;
 using Shared.Models;
@@ -10,14 +13,14 @@ public class Program
     public static void Main(string[] args)
     {
         // 具有命名策略和中间件的CORS
-        var AllowSpecificOrigns = "allowSpecificOrgins";
+        var allowSpecificOrigns = "allowSpecificOrgins";
 
         var builder = WebApplication.CreateBuilder(args);
 
         // 注册 CORS
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(name:AllowSpecificOrigns,
+            options.AddPolicy(name:allowSpecificOrigns,
                 policy =>
                 {
                     // 本机的 客户端  & 服务器 URL
@@ -31,9 +34,6 @@ public class Program
         builder.Services.AddControllers();
 
         builder.Services.AddServerSideBlazor();
-        // Add Services
-        //builder.Services.AddSingleton<IDatabaseService,DatabaseService>();
-        //builder.Services.AddSingleton<IFileReader,FileReaderService>();
 
         //注册数据库上下文，添加内存数据库
         builder.Services.AddDbContext<WordDbContext>(opt 
@@ -66,7 +66,7 @@ public class Program
         app.UseRouting();
 
         // 添加CORS
-        app.UseCors(AllowSpecificOrigns);
+        app.UseCors(allowSpecificOrigns);
 
         app.UseAuthorization();
         app.MapControllers();

@@ -1,6 +1,8 @@
 using Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Shared.Services.Impl;
+using Shared.Services;
 
 namespace Client
 {
@@ -14,6 +16,8 @@ namespace Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            // Add Services
+            builder.Services.AddSingleton<IWeatherService, WeatherService>();
             await builder.Build().RunAsync();
         }
     }

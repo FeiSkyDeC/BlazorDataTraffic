@@ -1,0 +1,38 @@
+﻿@page "/linquery"
+
+<h3>LINQ查询</h3>
+
+<div>
+    <label>最小数</label>
+    <input @bind-value="minNumber"/>
+    <lable>最大数</lable>
+    <input @bind-value="maxNumber"/>
+
+</div>
+
+<div style="margin: 10px 0;">
+    <button onclick="@Query">查询</button>
+</div>
+
+<div>
+    <WordComponent IsRenderOrNot="isRenderOrNot" MinNumber="minNumber" MaxNumber="maxNumber"></WordComponent>
+</div>
+
+
+@code {
+    private bool isRenderOrNot = false;
+    private int minNumber;
+    private int maxNumber;
+
+    private void Query()
+    {
+        isRenderOrNot = true;
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        StateHasChanged();
+        return base.OnParametersSetAsync();
+    }
+
+}

@@ -1,0 +1,21 @@
+﻿/* 设置表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* 设置表格边框样式 */
+table, th, td {
+    border: 1px solid #000;
+}
+
+/* 设置表头背景颜色和文本居中 */
+th {
+    background-color: #ccc;
+    text-align: center;
+}
+
+/* 设置表格内容文本居中 */
+td {
+    text-align: center;
+}

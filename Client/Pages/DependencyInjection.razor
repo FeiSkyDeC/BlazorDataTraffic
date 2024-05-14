@@ -1,0 +1,19 @@
+﻿@page "/dependencyinjection"
+@inject IWeatherService WeatherService
+
+<h3>依赖注入</h3>
+
+<button @onclick="GetWeather">Get Weather</button>
+
+<div>
+    <label>@weatherMessage</label>
+</div>
+
+@code {
+    private string weatherMessage;
+
+    private async Task GetWeather()
+    {
+        weatherMessage = await WeatherService.GetWeatherAsync();
+    }
+}

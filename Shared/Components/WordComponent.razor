@@ -1,27 +1,72 @@
 ﻿@inject HttpClient HttpClient
 
-<h3>WordComponent</h3>
 
-@if (Words is not null)
+@if (words is not null)
 {
-    @foreach (var item in Words)
-    {
-        <div>@item.Name</div>
-    }
+    // LINQ 查询
+    var query = from w in words
+                where w.Count >= MinNumber && w.Count <= MaxNumber
+                orderby w.Count
+                select w;
+
+    <div style="overflow: auto;">
+        <table style="border-style: groove;">
+            <caption>
+                关于LINQ查询的表格
+            </caption>
+            <colgroup>
+                <col span="2" style="border-right-style: double;"/>
+                <col span="2" style="border-style: none;"/>
+            </colgroup>
+            <tr>
+                <th scope="col" style="width: 180px;">单词名</th>
+                <th scope="col" style="width: 180px;">单词个数</th>
+            </tr>
+            @foreach (var item in query)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Count</td>
+                </tr>
+            }
+        </table>
+    </div>
 }
 
 @code {
-    private List<Word> Words;
-    private bool render = false;
+    [Tips(Tip = "是否渲染组件")]
+    [Parameter] 
+    public bool IsRenderOrNot { get; set; }
+
+    [Tips(Tip = "查询范围")]
+    [Parameter]
+    public int MinNumber { get; set; }
+    [Parameter]
+    public int MaxNumber { get; set; }
+
+    private bool isFirstRender { get; set; } = true;
+
+    private List<Word>? words;
     
-    protected override async Task OnInitializedAsync()
+    private async Task GetWordsAsync()
     {
+        // 检查读取状态
         var response = await HttpClient.GetAsync("https://localhost:7229/api/Words/GetWords");
 
         if (response.IsSuccessStatusCode)
         {
-
-            Words = await HttpClient.GetFromJsonAsync<List<Word>>("https://localhost:7229/api/Words/GetWords");
+            // 获取JSON格式数据
+            words = await HttpClient.GetFromJsonAsync<List<Word>>("https://localhost:7229/api/Words/GetWords");
         }
     }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (IsRenderOrNot)
+        {
+            await GetWordsAsync();
+            StateHasChanged();
+        }
+    }
+
 }
