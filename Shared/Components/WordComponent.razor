@@ -1,0 +1,27 @@
+﻿@inject HttpClient HttpClient
+
+<h3>WordComponent</h3>
+
+@if (Words is not null)
+{
+    @foreach (var item in Words)
+    {
+        <div>@item.Name</div>
+    }
+}
+
+@code {
+    private List<Word> Words;
+    private bool render = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await HttpClient.GetAsync("https://localhost:7229/api/Words/GetWords");
+
+        if (response.IsSuccessStatusCode)
+        {
+
+            Words = await HttpClient.GetFromJsonAsync<List<Word>>("https://localhost:7229/api/Words/GetWords");
+        }
+    }
+}
