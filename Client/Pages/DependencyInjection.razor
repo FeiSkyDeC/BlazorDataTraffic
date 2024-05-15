@@ -3,10 +3,20 @@
 
 <h3>依赖注入</h3>
 
-<button @onclick="GetWeather">Get Weather</button>
+<div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px;">
+    <div>
+        <div style="display: block; width: 100px; height: 60px; margin: 10px 0;">
+            <label>@weatherMessage</label>
+        </div>
 
-<div>
-    <label>@weatherMessage</label>
+        <button @onclick="GetWeather">Get Weather</button>
+    </div>
+    <div>
+        <pre>
+            [代码展示]
+            inject IWeatherService WeatherService
+        </pre>
+    </div>
 </div>
 
 @code {

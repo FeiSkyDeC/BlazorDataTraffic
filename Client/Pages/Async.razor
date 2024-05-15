@@ -1,27 +1,49 @@
 ﻿@page "/async"
 
-<h3>异步编程</h3>
+<h3>异步和同步操作比较</h3>
 
 <div>
-    <!-- 异步 -->
-    <div>
-        <label>
-            @AsyncMessage
-        </label>
-    </div>
-    <!-- 同步 -->
-    <div>
-        <label>
-            @SyncMessage
-        </label>
-    </div>
-
-    <button @onclick="CompareOperations">同时调用异步和同步函数</button>
+    <p>等待5秒操作开始</p>
 </div>
 
+<div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px;">
+    <div>
+        <!-- 异步 -->
+        <div style="display: inline-block; width: 200px; height: 60px;">
+            <label>
+                @AsyncMessage
+            </label>
+        </div>
+        <!-- 同步 -->
+        <div style="display: inline-block; width: 200px; height: 60px;">
+            <label>
+                @SyncMessage
+            </label>
+        </div>
+    
+        <div>
+            <button @onclick="CompareOperations">同时调用异步和同步函数</button>
+        </div>
+    </div>
+    <div>
+        <pre>
+        [展示代码]
+        // 启动异步操作
+        var asyncTask = AsyncOperation();
+
+        // 执行同步操作
+        SyncOperation();
+
+        // 等待异步操作完成
+        await asyncTask;
+        </pre>
+    </div>
+</div>
+
+
 @code {
-    private string AsyncMessage { get; set; } = "Async operation not started.";
-    private string SyncMessage { get; set; } = "Sync operation not started.";
+    private string AsyncMessage { get; set; } = "异步操作未开始";
+    private string SyncMessage { get; set; } = "同步操作未开始";
 
     private async Task CompareOperations()
     {
@@ -35,39 +57,39 @@
         await asyncTask;
     }
 
-    private void SyncOperation()
-    {
-        SyncMessage = "Sync operation started.";
-        StateHasChanged(); // 触发UI更新
-
-        // 模拟耗时5秒的同步操作
-        for (int i = 0; i < 5; i++)
-        {
-            // 模拟操作进度
-            SyncMessage = $"Sync operation in progress... {i * 100 / 5}%";
-            StateHasChanged(); // 触发UI更新
-            Thread.Sleep(1000); // 等待1秒
-        }
-
-        SyncMessage = "Sync operation finished.";
-        StateHasChanged(); // 触发UI更新
-    }
-
     private async Task AsyncOperation()
     {
-        AsyncMessage = "Async operation started.";
+        AsyncMessage = "异步操作开始";
         StateHasChanged(); // 触发UI更新
 
         // 模拟耗时5秒的异步操作
         for (int i = 0; i < 5; i++)
         {
             // 模拟操作进度
-            AsyncMessage = $"Async operation in progress... {i * 100 / 5}%";
+            AsyncMessage = $"异步操作运行中...... {i * 100 / 5}%";
             StateHasChanged(); // 触发UI更新
             await Task.Delay(1000); // 等待1秒
         }
 
-        AsyncMessage = "Async operation finished.";
+        AsyncMessage = "异步操作完成";
+        StateHasChanged(); // 触发UI更新
+    }
+
+    private void SyncOperation()
+    {
+        SyncMessage = "同步操作开始";
+        StateHasChanged(); // 触发UI更新
+
+        // 模拟耗时5秒的同步操作
+        for (int i = 0; i < 5; i++)
+        {
+            // 模拟操作进度
+            SyncMessage = $"同步操作运行中...... {i * 100 / 5}%";
+            StateHasChanged(); // 触发UI更新
+            Thread.Sleep(1000); // 等待1秒
+        }
+
+        SyncMessage = "同步操作完成";
         StateHasChanged(); // 触发UI更新
     }
 }

@@ -2,11 +2,38 @@
 
 <PageTitle>首页</PageTitle>
 
-<div>我们将通过示例程序：展示异步编程、依赖注入、LINQ查询的概念</div>
+<h3>示例：展示异步编程、依赖注入、LINQ查询的概念</h3>
 
-<div>
-    <img src="https://localhost:7229/皮卡丘.png" />
+<div style="font-family: '宋体', 'SimSun', 'STSong', 'Microsoft YaHei', sans-serif;">
+    <div style="font-size: 16px;"><a href="https://localhost:7258/async">异步编程</a></div>
+    <div style="color: #282c34; margin: 10px 0;">
+        <p>
+            在异步编程页面中，我们将同时调用同步和异步方法，分析两类方法运行情况
+        </p>
+        <p>
+            异步操作将等待同步操作完成后，运行。
+        </p>
+        <p>我们将通过进度条判断。</p>
+    </div>
+
+    <div style="font-size: 16px;"><a href="https://localhost:7258/dependencyinjection">依赖注入</a></div>
+    <div style="color: #282c34; margin: 10px 0;">
+        <p>
+            在依赖注入界面中，我们将调用IWeatherService接口中的GetWeather方法。
+        </p>
+    </div>
+
+    <div style="font-size: 16px;"><a href="https://localhost:7258/linquery">LINQ查询</a></div>
+    <div style="color: #282c34; margin: 10px 0;">
+        <p>
+            在LINQ查询界面，我们将通过调用API端口，获取内存数据库中的随机数据。
+        </p>
+        <p>
+            我们将通过LINQ查询语句，获取符合条件的数据并显示出来。
+        </p>
+    </div>
 </div>
+
 
 @code{
     

@@ -4,7 +4,7 @@
     {
         public async Task<string> GetWeatherAsync()
         {
-            await Task.Delay(3000);
+            //await Task.Delay(3000);
             return "Sunny";
         }
     }

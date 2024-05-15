@@ -18,6 +18,15 @@
     <WordComponent IsRenderOrNot="isRenderOrNot" MinNumber="minNumber" MaxNumber="maxNumber"></WordComponent>
 </div>
 
+<div>
+    <pre>
+        [代码展示]
+        var query = from w in words
+                where w.Count 大于等于 MinNumber && w.Count 小于 MaxNumber
+                orderby w.Count
+                select w;
+    </pre>
+</div>
 
 @code {
     private bool isRenderOrNot = false;
