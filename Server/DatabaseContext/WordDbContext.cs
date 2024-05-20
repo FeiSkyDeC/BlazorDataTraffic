@@ -21,7 +21,7 @@ public class WordDbContext:DbContext
         modelBuilder.Entity<Word>(entity =>
         {
             // 设置主键
-            entity.HasKey(e => e.Id); 
+            entity.HasKey(w => w.Id); 
         });
         base.OnModelCreating(modelBuilder);
     }

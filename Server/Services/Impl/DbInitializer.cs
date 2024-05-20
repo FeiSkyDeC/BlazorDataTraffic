@@ -55,4 +55,26 @@ public class DbInitializer
         //context.Words.Add(new Word { Name = "hello", Count = 0 });
         context.SaveChanges();
     }
+
+    //初始化Music数据库
+    public static void InitializeMusic(MusicContext context)
+    {
+        if (context.Musics.Any())
+        {
+            return;
+        }
+
+        //实例化类
+        //DbInitializer initializer = new DbInitializer();
+
+        var musics = new Music[]
+        {
+            new Music { Name = "DreamItPossible", Path = "/Resource/DreamItPossible.mp3" },
+            new Music { Name = "FoolForYou", Path = "/Resource/FoolForYou.mp3" },
+            new Music { Name="Senorita", Path = "/Resource/Senorita.mp3" }
+        };
+        
+        context.Musics.AddRange(musics);
+        context.SaveChanges();
+    }
 }

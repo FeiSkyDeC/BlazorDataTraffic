@@ -1,0 +1,10 @@
+﻿@page "/fileload"
+
+<button onclick="PlayMusic"></button>
+
+<div>文件加载</div>
+
+@foreach (var item in musicList)
+{
+    <div>@item.Path</div>
+}

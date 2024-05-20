@@ -1,0 +1,15 @@
+﻿@page "/filetranslate"
+
+<div style="height: 100px;">
+    <label>文件名：</label>
+    <input type="text" @bind="fileName"/>
+</div>
+
+<div>
+    <InputFile OnChange="LoadFiles" multiple style=" border: 1px solid #ccc;
+                                                    padding: 8px 12px;
+                                                    background-color: #f8f8f8;
+                                                    color: #333;
+                                                    border-radius: 5px;
+                                                    cursor: pointer;" />
+</div>

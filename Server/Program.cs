@@ -1,13 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Shared.Services;
-using Shared.Services.Impl;
-
-namespace Server;
 using Server.DatabaseContext;
-using Shared.Models;
 using Server.Services.Impl;
-using Server.Services;
-
+namespace Server;
 public class Program
 {
     public static void Main(string[] args)
@@ -28,6 +22,15 @@ public class Program
                                         "https://localhost:7229");
                 });
         });
+        
+        //确保数据库存放路径存在
+        //var dataDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Database");
+        var dataDirectory = "D:/Database";
+        AppDomain.CurrentDomain.SetData("DataDirectory", dataDirectory);
+        if (!Directory.Exists(dataDirectory))
+        {
+            Directory.CreateDirectory(dataDirectory);
+        }
 
         // Add services to the container.
 
@@ -39,12 +42,19 @@ public class Program
         builder.Services.AddDbContext<WordDbContext>(opt 
             =>opt.UseInMemoryDatabase("WordDatabase"));
         
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        //添加Sql数据库
+        builder.Services.AddDbContext<MusicContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("MusicContext")));
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        //添加数据库异常筛选器
+        //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
         var app = builder.Build();
 
+        //创建Word数据库
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
@@ -54,12 +64,37 @@ public class Program
             DbInitializer.Initialize(context);
         }
         
+        //创建Music数据库
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+
+            var context = services.GetRequiredService<MusicContext>();
+            context.Database.EnsureCreated();
+            DbInitializer.InitializeMusic(context);
+        }
+        
         // Configure the HTTP request pipeline.
+        // If current env is development env
+        // 启用 Swagger 调试工具
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            
+            // 启用开发者异常页
+            app.UseDeveloperExceptionPage();
         }
+        else
+        {
+
+            // 启用全局错误处理中间件和HSTS中间件
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
+
+        // 终结点路由
+        app.MapGet("/hello", () => "Hello World!");
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
@@ -68,6 +103,10 @@ public class Program
         // 添加CORS
         app.UseCors(allowSpecificOrigns);
 
+        // 启用认证中间件
+        //app.UseAuthentication();
+        
+        // 启用授权中间件
         app.UseAuthorization();
         app.MapControllers();
         app.MapFallbackToFile("index.html");
